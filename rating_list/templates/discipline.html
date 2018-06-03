@@ -1,0 +1,5 @@
+<ol>
+    {% for line in ratings %}
+    <li><a href="../../player/{{ line.player.id }}/">{{ line.player.name }} {% if not line.player.verified %}(assumed){% endif %} </a> - {{ line.rating }}</a></li>
+    {% endfor %}
+</ol>

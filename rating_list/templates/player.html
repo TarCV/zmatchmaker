@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ player.name }}</title>
+</head>
+<body>
+<h1>{{ player.name }}</h1>
+{% for line in ratings %}
+<li>{{ line.discipline.name }} - {{ line.rating }}</a></li>
+{% endfor %}
+</body>
+</html>
