@@ -14,9 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from tastypie.api import Api
+from results.api.resources import MatchResource
+
+v1_api = Api(api_name='v1')
+v1_api.register(MatchResource())
 
 urlpatterns = [
     path('rating/', include('rating_list.urls')),
     path('admin/', admin.site.urls),
+    re_path(r'^api/', include(v1_api.urls))
 ]

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost', '192.168.1.44']
 
 INSTALLED_APPS = [
     'rating_list.apps.RatingDataConfig',
+    'results.apps.ResultsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
