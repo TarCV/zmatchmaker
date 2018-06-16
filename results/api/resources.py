@@ -4,16 +4,32 @@ from tastypie.authorization import Authorization
 from results.models import Match, Score
 
 
-class MatchResource(ModelResource):
-    scores = fields.ToManyField('results.api.resources.ScoreResource', 'score_set', full=True)
-
-    class Meta:
-        queryset = Match.objects.all()
-        allowed_methods = ['get', 'post']
-        authorization = Authorization()
+def score_hidden_fields():
+    return ['id', 'resource_uri', 'match']
 
 
 class ScoreResource(ModelResource):
+    match = fields.ToOneField('results.api.resources.MatchResource', 'match')
+
+    def dehydrate(self, bundle):
+        for field in score_hidden_fields():
+            if field in bundle.data:
+                del bundle.data[field]
+        return super().dehydrate(bundle)
+
     class Meta:
+        resource_name = 'score'
         queryset = Score.objects.all()
-        allowed_methods = ['get']
+        excludes = score_hidden_fields()
+        authorization = Authorization()
+
+
+class MatchResource(ModelResource):
+    scores = fields.ToManyField(ScoreResource, 'score_set', related_name='match', full=True)
+
+    class Meta:
+        resource_name = 'match'
+        queryset = Match.objects.all()
+        allowed_methods = ['get', 'post']
+        excludes = ['id', 'resource_uri']
+        authorization = Authorization()
